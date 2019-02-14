@@ -38,28 +38,22 @@ exports.deleteTask = asyncHandler(async (req, res, next) => {
 exports.modifyTask = asyncHandler(async (req, res, next) => {
   if (!req.user) throw new Error("Hey, are you sure you are logged in");
 
-  // check if the task is existing in the database
   const task = await Task.findById(req.params.taskId);
   if (!task) throw new Error("Task does not exist, try another one");
 
-  // check if the user is the owner of the old process
   const oldProcess = await Process.findById(task.process);
   if (oldProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
 
-  // check if the user is the owner of the new process
   const newProcess = await Process.findById(req.params.processId);
   if (!newProcess) throw new Error("This process does not exist");
   if (newProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
 
-  // add the task to the new process
   if (newProcess.tasks.indexOf(req.params.taskId) >= 0) throw new Error(`Task with the id ${req.params.taskId} already exist in this process`);
 
-  // remove the task from the previous process
   oldProcess.tasks = oldProcess.tasks.filter(task => task.toString() !== req.params.taskId.toString());
 
   newProcess.tasks.push(req.params.taskId);
 
-  // add the new process to the task
   task.process = newProcess._id;
   task.save((err, result) => {
     if (err) next(err);
