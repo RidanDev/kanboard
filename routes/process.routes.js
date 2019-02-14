@@ -5,6 +5,7 @@ const route = express.Router();
 
 route.post("/process/create", process.createProcess);
 route.get("/process/:processId", process.getProcess);
+route.put("/process/:processId", process.modifyProcess);
 route.delete("/process/:processId", process.deleteUserProcess);
 route.get("/processes", process.getAllProcesses);
 route.get("/user/processes", process.getProcessByUser);

@@ -9,7 +9,7 @@ exports.createTask = asyncHandler(async (req, res, next) => {
   const process = await Process.findById(req.params.processId);
   process.tasks.push(task._id);
   process.save(err => {
-    if (err) throw new Error(err);
+    if (err) next(err);
 
     res.json({ message: "task created", task });
   });
@@ -27,7 +27,7 @@ exports.deleteTask = asyncHandler(async (req, res, next) => {
   if (task) {
     process.tasks = process.tasks.filter(task => task.toString() !== req.params.taskId.toString());
     process.save((err, result) => {
-      if (err) throw new Error(err);
+      if (err) next(err);
       res.json({ message: "task deleted successfully" });
     });
   } else {

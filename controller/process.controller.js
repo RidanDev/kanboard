@@ -57,3 +57,17 @@ exports.deleteUserProcess = asyncHandler(async (req, res, next) => {
     if (deletedProcess) res.json({ message: "Process deleted successfully!" });
   }
 });
+
+exports.modifyProcess = asyncHandler(async (req, res, next) => {
+  if (!req.user) throw new Error("To modify your process, you need to log in");
+
+  const process = await Process.findById(req.params.processId);
+  if (!process) throw new Error("Process does not exist");
+
+  process.title = req.body.title;
+  process.save((err, result) => {
+    if (err) next(err);
+
+    res.json({ message: "Process updated successfully", result });
+  });
+});
