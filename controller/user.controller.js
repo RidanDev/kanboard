@@ -29,15 +29,15 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.loginUser = asyncHandler(async (req, res, next) => {
-  if (!req.body.email || !(req.body.email.length > 0)) return res.json({ message: "email field should not be empty" });
+  if (!req.body.email || !(req.body.email.length > 0)) throw new Error("email field should not be empty");
 
-  if (!req.body.password) return res.json({ message: "password field should not be empty" });
+  if (!req.body.password) throw new Error("password field should not be empty");
 
   const user = await User.findOne({ email: req.body.email.toLowerCase() });
-  if (!user) return res.json({ message: "email or password is incorrect" });
+  if (!user) throw new Error("email or password is incorrect");
 
   const confirmPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!confirmPassword) return res.json({ message: "email or password is incorrect" });
+  if (!confirmPassword) throw new Error("email or password is incorrect");
 
   const set = await setCookie(user, res);
   if (set) return res.json({ message: "User successfully logged in" });

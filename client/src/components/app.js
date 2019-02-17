@@ -1,25 +1,17 @@
 import React from "react";
-import "./app.scss";
-import imgFile from "../../assests/image/Favicon.png";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Dashboard from "./dashboard/dashboard";
+import Signup from "./signup/signup";
+import Login from "./login/login";
 
-const App = () => {
-  return (
-    <div className="full-screen">
-      <div>
-        <h1>
-          React Page <img src={imgFile} width="30" height="30" />{" "}
-        </h1>
-        <br />
-        <a
-          className="button-line"
-          href="https://github.com/deityhub"
-          target="_blank"
-        >
-          Know more now
-        </a>
-      </div>
-    </div>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/" component={Dashboard} />
+    </Switch>
+  </BrowserRouter>
+);
 
 export default App;

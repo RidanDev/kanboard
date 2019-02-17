@@ -12,7 +12,7 @@ exports.createProcess = asyncHandler(async (req, res, next) => {
 
   const process = await Process.create({ title: req.body.title, user: req.user._id });
   res.json({
-    message: "Process created",
+    message: "Process created successfully",
     process
   });
 });
