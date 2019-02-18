@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { createUserProcess, getUserProcesses } from "../actions/dashboard.action";
 
 class DashboardNav extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
+    process: ""
   };
 
   toggleOpen = () => {
@@ -11,18 +14,36 @@ class DashboardNav extends Component {
     }));
   };
 
+  handleChange = e => {
+    this.setState({
+      process: e.target.value
+    });
+  };
+
+  createProcess = e => {
+    e.preventDefault();
+    let process = { title: this.state.process };
+
+    this.props.createProcess(process);
+    this.setState({
+      isOpen: false
+    });
+  };
+
   render() {
-    let { isOpen } = this.state;
+    let { isOpen, process } = this.state;
 
     return (
       <div className="dashboard__navigation">
         <div>
           {isOpen ? <i className="fas fa-minus" onClick={this.toggleOpen} /> : <i className="fas fa-plus" onClick={this.toggleOpen} />}
           {isOpen && (
-            <aside className="input">
-              <input type="text" placeholder="Add a Process" />
-              <button className="btn--secondary">Create</button>
-            </aside>
+            <form onSubmit={this.createProcess} className="input">
+              <input type="text" placeholder="Add a Process" value={process} onChange={this.handleChange} required />
+              <button className="btn--secondary" type="submit">
+                Create
+              </button>
+            </form>
           )}
         </div>
         <span>User</span>
@@ -31,4 +52,12 @@ class DashboardNav extends Component {
   }
 }
 
-export default DashboardNav;
+const mapDispatchToProps = dispatch => ({
+  createProcess: process => dispatch(createUserProcess(process)),
+  getUserProcess: () => dispatch(getUserProcesses())
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(DashboardNav);

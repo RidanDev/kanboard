@@ -20,17 +20,11 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    dashboard: state.dashboard
-  };
-};
-
 const mapDispatchToProps = dispatch => ({
   getUserProcesses: () => dispatch(getUserProcesses())
 });
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Dashboard);

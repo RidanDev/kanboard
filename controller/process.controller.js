@@ -6,6 +6,8 @@ const capitalize = require("../lib/capitalize");
 exports.createProcess = asyncHandler(async (req, res, next) => {
   if (!req.user) throw new Error("You need to log in to create a process");
 
+  if (!req.body.title.trim().length > 0) throw new Error("Process title should not be empty");
+
   let title = capitalize(req.body.title);
   let processExist = await Process.findOne({ title, user: req.user._id });
   if (processExist) throw new Error("Process with this title already created by this user, try another one");
