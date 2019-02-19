@@ -31,7 +31,7 @@ exports.deleteTask = asyncHandler(async (req, res, next) => {
       res.json({ message: "task deleted successfully" });
     });
   } else {
-    res.json({ message: "task already deleted!" });
+    throw new Error("task already deleted!");
   }
 });
 

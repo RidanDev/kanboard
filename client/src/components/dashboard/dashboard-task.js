@@ -37,7 +37,7 @@ class CreateTask extends Component {
       <div className="tasker">
         {taskOpen && (
           <form onSubmit={this.createTask} className="tasker__form">
-            <textarea name="task" id="task" value={task} onChange={this.handleChange} />
+            <textarea name="task" id="task" value={task} onChange={this.handleChange} autoFocus />
             <button className="btn btn--secondary" type="submit">
               Create task
             </button>

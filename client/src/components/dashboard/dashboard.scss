@@ -78,7 +78,27 @@
     padding: 2rem;
     position: relative;
 
-    & .fas {
+    & span {
+      display: inline-block;
+
+      & input {
+        width: 100%;
+        background-color: #fff;
+        height: 3rem;
+        border-radius: 5px;
+        padding: 0 1rem;
+        color: #0b0c0c;
+        font-size: 1.3rem;
+        border: 1px solid #a2a5aa;
+      }
+    }
+
+    & span:not(:last-child) {
+      width: 80%;
+    }
+
+    & .fas,
+    & .far {
       cursor: pointer;
 
       &:not(:last-child) {
@@ -124,6 +144,9 @@
         border-radius: 5px;
         height: 10rem;
         padding: 1rem;
+        background-color: #fff;
+        border: 1px solid #a2a5aa;
+        color: #0b0c0c;
       }
 
       & button {

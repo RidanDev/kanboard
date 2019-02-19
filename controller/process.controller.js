@@ -34,6 +34,7 @@ exports.getProcessByUser = asyncHandler(async (req, res, next) => {
 
   const processes = await Process.find({ user: req.user._id }).populate("tasks");
   res.json({
+    count: processes.length,
     processes
   });
 });

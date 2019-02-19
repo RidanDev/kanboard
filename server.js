@@ -19,9 +19,10 @@ const app = express();
 app.use(function(req, res, next) {
   // This cors setting makes sure that cookie is set on the client's device
   // In the frontend make sure to set withCredentials: true, so that cookie can be sent along on network request
-  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "HEAD, GET, POST, OPTIONS, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });

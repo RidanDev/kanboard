@@ -1,20 +1,10 @@
 import axios from "axios";
 import { API_URL } from "../../config";
-import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START } from "./action-types";
+import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START, DELETE_PROCESS, DELETE_PROCESS_START, DELETE_PROCESS_ERROR, EDIT_PROCESS, EDIT_PROCESS_START, EDIT_PROCESS_ERROR, DELETE_TASK, DELETE_TASK_START, DELETE_TASK_ERROR } from "./action-types";
 
 const getUserProcessStart = () => ({
   type: GET_USER_PROCESS_START,
   payload: "Getting user's processes..."
-});
-
-const startProcessCreation = () => ({
-  type: CREATE_PROCESS_START,
-  payload: "Process creation started..."
-});
-
-const startTaskCreation = () => ({
-  type: CREATE_TASK_START,
-  payload: "Task creation started..."
 });
 
 export const getUserProcesses = () => dispatch => {
@@ -23,25 +13,26 @@ export const getUserProcesses = () => dispatch => {
   axios
     .get(`${API_URL}/user/processes`, { withCredentials: true })
     .then(res => {
-      if (res.data.error) {
-        throw new Error(res.data.error);
-      }
+      if (res.data.error) throw new Error(res.data.error);
 
       dispatch({
         type: GET_USER_PROCESS,
         payload: res.data.processes
       });
     })
-    .catch(err => {
+    .catch(err =>
       dispatch({
         type: GET_USER_PROCESS_ERROR,
         payload: err
-      });
-    });
+      })
+    );
 };
 
 export const createUserProcess = process => dispatch => {
-  dispatch(startProcessCreation());
+  dispatch({
+    type: CREATE_PROCESS_START,
+    payload: "Process creation started..."
+  });
 
   axios({
     method: "post",
@@ -50,35 +41,32 @@ export const createUserProcess = process => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) {
-        throw new Error(res.data.error);
-      }
+      if (res.data.error) throw new Error(res.data.error);
 
       dispatch({
         type: CREATE_PROCESS,
         payload: res.data.message
       });
 
+      // refetch the user's processes
       dispatch(getUserProcessStart());
 
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) {
-            throw new Error(res.data.error);
-          }
+          if (res.data.error) throw new Error(res.data.error);
 
           dispatch({
             type: GET_USER_PROCESS,
             payload: res.data.processes
           });
         })
-        .catch(err => {
+        .catch(err =>
           dispatch({
             type: GET_USER_PROCESS_ERROR,
             payload: err
-          });
-        });
+          })
+        );
     })
     .catch(err =>
       dispatch({
@@ -88,8 +76,103 @@ export const createUserProcess = process => dispatch => {
     );
 };
 
+export const editUserProcess = (processId, details) => dispatch => {
+  dispatch({
+    type: EDIT_PROCESS_START,
+    payload: `Process with id ${processId} about to be edited...`
+  });
+
+  axios({
+    method: "put",
+    url: `${API_URL}/process/${processId}`,
+    data: details,
+    withCredentials: true
+  })
+    .then(res => {
+      if (res.data.error) throw new Error(res.data.error);
+
+      dispatch({
+        type: EDIT_PROCESS,
+        payload: res.data.message
+      });
+
+      // refetch the user's processes
+      dispatch(getUserProcessStart());
+
+      axios
+        .get(`${API_URL}/user/processes`, { withCredentials: true })
+        .then(res => {
+          if (res.data.error) throw new Error(res.data.error);
+
+          dispatch({
+            type: GET_USER_PROCESS,
+            payload: res.data.processes
+          });
+        })
+        .catch(err =>
+          dispatch({
+            type: GET_USER_PROCESS_ERROR,
+            payload: err
+          })
+        );
+    })
+    .catch(err =>
+      dispatch({
+        type: EDIT_PROCESS_ERROR,
+        payload: err
+      })
+    );
+};
+
+export const deleteUserProcess = processId => dispatch => {
+  dispatch({
+    type: DELETE_PROCESS_START,
+    payload: `Process with the id ${processId} about to be deleted...`
+  });
+
+  axios
+    .delete(`${API_URL}/process/${processId}`, { withCredentials: true })
+    .then(res => {
+      if (res.data.error) throw new Error(res.data.error);
+
+      dispatch({
+        type: DELETE_PROCESS,
+        payload: res.data.message
+      });
+
+      // refetch the user's processes
+      dispatch(getUserProcessStart());
+
+      axios
+        .get(`${API_URL}/user/processes`, { withCredentials: true })
+        .then(res => {
+          if (res.data.error) throw new Error(res.data.error);
+
+          dispatch({
+            type: GET_USER_PROCESS,
+            payload: res.data.processes
+          });
+        })
+        .catch(err =>
+          dispatch({
+            type: GET_USER_PROCESS_ERROR,
+            payload: err
+          })
+        );
+    })
+    .catch(err => {
+      dispatch({
+        type: DELETE_PROCESS_ERROR,
+        payload: err
+      });
+    });
+};
+
 export const createUserTask = (task, processId) => dispatch => {
-  dispatch(startTaskCreation());
+  dispatch({
+    type: CREATE_TASK_START,
+    payload: "Task creation started..."
+  });
 
   axios({
     method: "post",
@@ -98,39 +181,80 @@ export const createUserTask = (task, processId) => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) {
-        throw new Error(res.data.error);
-      }
+      if (res.data.error) throw new Error(res.data.error);
 
       dispatch({
         type: CREATE_TASK,
         payload: res.data.message
       });
 
+      // refetch the user's processes
       dispatch(getUserProcessStart());
 
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) {
-            throw new Error(res.data.error);
-          }
+          if (res.data.error) throw new Error(res.data.error);
 
           dispatch({
             type: GET_USER_PROCESS,
             payload: res.data.processes
           });
         })
-        .catch(err => {
+        .catch(err =>
           dispatch({
             type: GET_USER_PROCESS_ERROR,
             payload: err
-          });
-        });
+          })
+        );
     })
     .catch(err =>
       dispatch({
         type: CREATE_TASK_ERROR,
+        payload: err
+      })
+    );
+};
+
+export const deleteUserTask = (processId, taskId) => dispatch => {
+  dispatch({
+    type: DELETE_TASK_START,
+    payload: `Task with the id ${taskId} about to be deleted...`
+  });
+
+  axios
+    .delete(`${API_URL}/task/${processId}/${taskId}`, { withCredentials: true })
+    .then(res => {
+      if (res.data.error) throw new Error(res.data.error);
+
+      dispatch({
+        type: DELETE_TASK,
+        payload: res.data.message
+      });
+
+      // refetch the user's processes
+      dispatch(getUserProcessStart());
+
+      axios
+        .get(`${API_URL}/user/processes`, { withCredentials: true })
+        .then(res => {
+          if (res.data.error) throw new Error(res.data.error);
+
+          dispatch({
+            type: GET_USER_PROCESS,
+            payload: res.data.processes
+          });
+        })
+        .catch(err =>
+          dispatch({
+            type: GET_USER_PROCESS_ERROR,
+            payload: err
+          })
+        );
+    })
+    .catch(err =>
+      dispatch({
+        type: DELETE_TASK_ERROR,
         payload: err
       })
     );

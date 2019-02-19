@@ -26,7 +26,8 @@ class DashboardNav extends Component {
 
     this.props.createProcess(process);
     this.setState({
-      isOpen: false
+      isOpen: false,
+      process: ""
     });
   };
 
@@ -39,7 +40,7 @@ class DashboardNav extends Component {
           {isOpen ? <i className="fas fa-minus" onClick={this.toggleOpen} /> : <i className="fas fa-plus" onClick={this.toggleOpen} />}
           {isOpen && (
             <form onSubmit={this.createProcess} className="input">
-              <input type="text" placeholder="Add a Process" value={process} onChange={this.handleChange} required />
+              <input type="text" placeholder="Add a Process" value={process} onChange={this.handleChange} required autoFocus />
               <button className="btn--secondary" type="submit">
                 Create
               </button>
