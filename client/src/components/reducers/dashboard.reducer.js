@@ -1,4 +1,4 @@
-import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START, DELETE_PROCESS, DELETE_PROCESS_START, DELETE_PROCESS_ERROR, EDIT_PROCESS, EDIT_PROCESS_START, EDIT_PROCESS_ERROR, DELETE_TASK, DELETE_TASK_START, DELETE_TASK_ERROR } from "../actions/action-types";
+import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START, DELETE_PROCESS, DELETE_PROCESS_START, DELETE_PROCESS_ERROR, EDIT_PROCESS, EDIT_PROCESS_START, EDIT_PROCESS_ERROR, DELETE_TASK, DELETE_TASK_START, DELETE_TASK_ERROR, EDIT_TASK, EDIT_TASK_START, EDIT_TASK_ERROR } from "../actions/action-types";
 
 const initialState = {
   processes: [],
@@ -131,6 +131,27 @@ const dashboard = (state = initialState, action) => {
         message: action.payload
       };
     case EDIT_PROCESS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        message: ""
+      };
+    case EDIT_TASK_START:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        message: action.payload
+      };
+    case EDIT_TASK:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        message: action.payload
+      };
+    case EDIT_TASK_ERROR:
       return {
         ...state,
         loading: false,

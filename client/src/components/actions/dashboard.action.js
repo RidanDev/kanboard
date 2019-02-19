@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../../config";
-import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START, DELETE_PROCESS, DELETE_PROCESS_START, DELETE_PROCESS_ERROR, EDIT_PROCESS, EDIT_PROCESS_START, EDIT_PROCESS_ERROR, DELETE_TASK, DELETE_TASK_START, DELETE_TASK_ERROR } from "./action-types";
+import { GET_USER_PROCESS, GET_USER_PROCESS_ERROR, GET_USER_PROCESS_START, CREATE_PROCESS, CREATE_PROCESS_START, CREATE_PROCESS_ERROR, CREATE_TASK, CREATE_TASK_ERROR, CREATE_TASK_START, DELETE_PROCESS, DELETE_PROCESS_START, DELETE_PROCESS_ERROR, EDIT_PROCESS, EDIT_PROCESS_START, EDIT_PROCESS_ERROR, DELETE_TASK, DELETE_TASK_START, DELETE_TASK_ERROR, EDIT_TASK, EDIT_TASK_START, EDIT_TASK_ERROR } from "./action-types";
 
 const getUserProcessStart = () => ({
   type: GET_USER_PROCESS_START,
@@ -211,6 +211,53 @@ export const createUserTask = (task, processId) => dispatch => {
     .catch(err =>
       dispatch({
         type: CREATE_TASK_ERROR,
+        payload: err
+      })
+    );
+};
+
+export const editUserTask = (processId, taskId) => dispatch => {
+  dispatch({
+    type: EDIT_TASK_START,
+    payload: `Task with id ${taskId} is being edited...`
+  });
+
+  axios({
+    method: "put",
+    url: `${API_URL}/task/${processId}/${taskId}`,
+    withCredentials: true
+  })
+    .then(res => {
+      if (res.data.error) throw new Error(res.data.error);
+
+      dispatch({
+        type: EDIT_TASK,
+        payload: res.data.message
+      });
+
+      // refetch the user's processes
+      dispatch(getUserProcessStart());
+
+      axios
+        .get(`${API_URL}/user/processes`, { withCredentials: true })
+        .then(res => {
+          if (res.data.error) throw new Error(res.data.error);
+
+          dispatch({
+            type: GET_USER_PROCESS,
+            payload: res.data.processes
+          });
+        })
+        .catch(err =>
+          dispatch({
+            type: GET_USER_PROCESS_ERROR,
+            payload: err
+          })
+        );
+    })
+    .catch(err =>
+      dispatch({
+        type: EDIT_TASK_ERROR,
         payload: err
       })
     );
