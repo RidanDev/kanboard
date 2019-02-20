@@ -4,7 +4,9 @@ const initialState = {
   processes: [],
   loading: false,
   error: "",
-  message: ""
+  message: "",
+  user: {},
+  count: 0
 };
 
 const dashboard = (state = initialState, action) => {
@@ -12,10 +14,11 @@ const dashboard = (state = initialState, action) => {
     case GET_USER_PROCESS:
       return {
         ...state,
-        processes: [...action.payload],
+        processes: [...action.payload.processes],
         loading: false,
         error: "",
-        message: ""
+        message: "",
+        count: action.payload.count
       };
     case CREATE_PROCESS:
       return {
@@ -37,7 +40,8 @@ const dashboard = (state = initialState, action) => {
         error: action.payload,
         loading: false,
         processes: [],
-        message: ""
+        message: "",
+        count: 0
       };
     case CREATE_PROCESS_ERROR:
       return {
@@ -58,7 +62,8 @@ const dashboard = (state = initialState, action) => {
         ...state,
         loading: true,
         error: "",
-        message: action.payload
+        message: action.payload,
+        count: 0
       };
     case CREATE_PROCESS_START:
       return {

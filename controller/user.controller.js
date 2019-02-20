@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../model/user.model");
 const asyncHandler = require("../lib/async_handler");
 const setCookie = require("../lib/cookie_token");
@@ -40,7 +39,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   if (!confirmPassword) throw new Error("email or password is incorrect");
 
   const set = await setCookie(user, res);
-  if (set) return res.json({ message: "User successfully logged in" });
+  if (set) return res.json({ message: "User successfully logged in", user: { _id: user._id, name: user.name, username: user.username } });
 });
 
 exports.logoutUser = asyncHandler(async (req, res, next) => {

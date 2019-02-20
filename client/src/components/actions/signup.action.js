@@ -10,8 +10,12 @@ const signupStart = () => ({
 export const signupUser = details => dispatch => {
   dispatch(signupStart());
 
-  axios
-    .post(`${API_URL}/user/signup`, details)
+  axios({
+    method: "post",
+    url: `${API_URL}/user/signup`,
+    data: details,
+    withCredentials: true
+  })
     .then(res => {
       if (res.data.error) {
         return dispatch({
@@ -24,6 +28,9 @@ export const signupUser = details => dispatch => {
         type: SIGNUP_USER,
         payload: res.data.message
       });
+
+      localStorage.setItem("kanboarding", true);
+      window.location.reload();
     })
     .catch(err => {
       dispatch({

@@ -1,13 +1,25 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { loginUser } from "../actions/login.action";
 
 class Login extends Component {
+  constructor() {
+    super();
+  }
+
   state = {
     email: "",
     password: ""
   };
+
+  componentDidMount() {
+    let loggedIn = localStorage.getItem("kanboarding");
+    if (loggedIn) {
+      this.props.history.push("/");
+    }
+  }
 
   handleChange = event => {
     this.setState({
@@ -32,19 +44,19 @@ class Login extends Component {
           <fieldset className="form-wrapper__fieldset">
             <div>
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" value={email} onChange={this.handleChange} />
+              <input type="email" id="email" value={email} onChange={this.handleChange} required />
             </div>
 
             <div>
               <label htmlFor="password">Password</label>
-              <input type="password" id="password" value={password} onChange={this.handleChange} />
+              <input type="password" id="password" value={password} onChange={this.handleChange} required />
             </div>
 
             <button className="btn btn--primary" type="submit">
               Login
             </button>
             <span>
-              Or <Link to="/signup">Register a new account</Link>
+              No account? <Link to="/signup">register a new account</Link>
             </span>
           </fieldset>
         </form>
@@ -57,7 +69,12 @@ const mapDispatchToProps = dispatch => ({
   loginUser: payload => dispatch(loginUser(payload))
 });
 
+const mapStateToProps = state => ({
+  loggedIn: state.login.loggedIn,
+  user: state.login.user
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);

@@ -1,8 +1,8 @@
-import { LOGIN_USER, LOGIN_USER_ERROR, LOGIN_USER_START } from "../actions/action-types";
+import { LOGIN_USER, LOGIN_USER_ERROR, LOGIN_USER_START, LOGOUT_USER, LOGOUT_USER_ERROR, LOGOUT_USER_START } from "../actions/action-types";
 
 const initialState = {
-  email: "",
-  password: "",
+  user: {},
+  loggedIn: false,
   loading: false,
   error: "",
   message: ""
@@ -13,8 +13,10 @@ const login = (state = initialState, action) => {
     case LOGIN_USER:
       return {
         ...state,
+        user: { ...state.user, ...action.payload.user },
+        loggedIn: true,
         loading: false,
-        message: action.payload,
+        message: action.payload.message,
         error: ""
       };
     case LOGIN_USER_ERROR:
@@ -22,9 +24,32 @@ const login = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
-        message: ""
+        message: "",
+        loggedIn: false
       };
     case LOGIN_USER_START:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        message: action.payload
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        message: action.payload,
+        loggedIn: false
+      };
+    case LOGOUT_USER_START:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        message: action.payload
+      };
+    case LOGOUT_USER_ERROR:
       return {
         ...state,
         loading: true,

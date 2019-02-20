@@ -13,11 +13,15 @@ export const getUserProcesses = () => dispatch => {
   axios
     .get(`${API_URL}/user/processes`, { withCredentials: true })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: GET_USER_PROCESS_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: GET_USER_PROCESS,
-        payload: res.data.processes
+        payload: res.data
       });
     })
     .catch(err =>
@@ -41,7 +45,11 @@ export const createUserProcess = process => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: CREATE_PROCESS_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: CREATE_PROCESS,
@@ -54,11 +62,15 @@ export const createUserProcess = process => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>
@@ -89,7 +101,11 @@ export const editUserProcess = (processId, details) => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: EDIT_PROCESS_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: EDIT_PROCESS,
@@ -102,11 +118,15 @@ export const editUserProcess = (processId, details) => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>
@@ -133,7 +153,11 @@ export const deleteUserProcess = processId => dispatch => {
   axios
     .delete(`${API_URL}/process/${processId}`, { withCredentials: true })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: DELETE_PROCESS_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: DELETE_PROCESS,
@@ -146,11 +170,15 @@ export const deleteUserProcess = processId => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>
@@ -181,7 +209,11 @@ export const createUserTask = (task, processId) => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: CREATE_TASK_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: CREATE_TASK,
@@ -194,11 +226,15 @@ export const createUserTask = (task, processId) => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>
@@ -228,7 +264,11 @@ export const editUserTask = (processId, taskId) => dispatch => {
     withCredentials: true
   })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: EDIT_TASK_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: EDIT_TASK,
@@ -241,11 +281,15 @@ export const editUserTask = (processId, taskId) => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>
@@ -272,7 +316,11 @@ export const deleteUserTask = (processId, taskId) => dispatch => {
   axios
     .delete(`${API_URL}/task/${processId}/${taskId}`, { withCredentials: true })
     .then(res => {
-      if (res.data.error) throw new Error(res.data.error);
+      if (res.data.error)
+        return dispatch({
+          type: DELETE_TASK_ERROR,
+          payload: res.data.error
+        });
 
       dispatch({
         type: DELETE_TASK,
@@ -285,11 +333,15 @@ export const deleteUserTask = (processId, taskId) => dispatch => {
       axios
         .get(`${API_URL}/user/processes`, { withCredentials: true })
         .then(res => {
-          if (res.data.error) throw new Error(res.data.error);
+          if (res.data.error)
+            return dispatch({
+              type: GET_USER_PROCESS_ERROR,
+              payload: res.data.error
+            });
 
           dispatch({
             type: GET_USER_PROCESS,
-            payload: res.data.processes
+            payload: res.data
           });
         })
         .catch(err =>

@@ -11,6 +11,13 @@ class Signup extends Component {
     password: ""
   };
 
+  componentDidMount() {
+    let loggedIn = localStorage.getItem("kanboarding");
+    if (loggedIn) {
+      this.props.history.push("/");
+    }
+  }
+
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value

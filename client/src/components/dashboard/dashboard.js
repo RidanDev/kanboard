@@ -8,6 +8,11 @@ import DashboardCard from "./dashboard-card";
 class Dashboard extends Component {
   componentDidMount = () => {
     this.props.getUserProcesses();
+
+    let loggedIn = localStorage.getItem("kanboarding");
+    if (!loggedIn) {
+      this.props.history.push("/login");
+    }
   };
 
   render() {
@@ -24,7 +29,11 @@ const mapDispatchToProps = dispatch => ({
   getUserProcesses: () => dispatch(getUserProcesses())
 });
 
+const mapStateToProps = state => ({
+  error: state.dashboard.error
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Dashboard);
