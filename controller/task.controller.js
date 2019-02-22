@@ -21,7 +21,7 @@ exports.deleteTask = asyncHandler(async (req, res, next) => {
   const process = await Process.findById(req.params.processId);
   if (!process) throw new Error("This process does not exist");
 
-  if (process.user.toString() !== req.user._id.toString()) throw new Error("You are not the owner of this process");
+  // if (process.user.toString() !== req.user._id.toString()) throw new Error("You are not the owner of this process");
 
   const task = await Task.findByIdAndDelete(req.params.taskId);
   if (task) {
@@ -42,11 +42,11 @@ exports.modifyTask = asyncHandler(async (req, res, next) => {
   if (!task) throw new Error("Task does not exist, try another one");
 
   const oldProcess = await Process.findById(task.process);
-  if (oldProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
+  // if (oldProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
 
   const newProcess = await Process.findById(req.params.processId);
   if (!newProcess) throw new Error("This process does not exist");
-  if (newProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
+  // if (newProcess.user.toString() !== req.user._id.toString()) throw new Error("Hey, it seems you are not the owner of this process");
 
   if (newProcess.tasks.indexOf(req.params.taskId) >= 0) throw new Error(`Task with the id ${req.params.taskId} already exist in this process`);
 

@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const user_route = require("./routes/user.routes");
 const process_route = require("./routes/process.routes");
 const task_route = require("./routes/task.routes");
+const board_route = require("./routes/board.routes");
 const User = require("./model/user.model");
 
 mongoose
@@ -57,6 +58,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", user_route);
 app.use("/api", process_route);
 app.use("/api", task_route);
+app.use("/api", board_route);
 
 app.use((err, req, res, next) => {
   res.json({

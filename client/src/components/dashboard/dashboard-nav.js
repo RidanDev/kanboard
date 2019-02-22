@@ -49,6 +49,7 @@ class DashboardNav extends Component {
           )}
         </div>
         <span>
+          <span>{this.props.user.name && `Welcome ${this.props.user.name}`}</span>
           <button onClick={() => this.props.logoutUser()}>Logout</button>
         </span>
       </div>
@@ -58,11 +59,14 @@ class DashboardNav extends Component {
 
 const mapDispatchToProps = dispatch => ({
   createProcess: process => dispatch(createUserProcess(process)),
-  getUserProcess: () => dispatch(getUserProcesses()),
   logoutUser: () => dispatch(logoutUser())
 });
 
+const mapStateToProps = state => ({
+  user: state.login.user
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(DashboardNav);

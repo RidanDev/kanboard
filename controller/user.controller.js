@@ -15,6 +15,13 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getUser = asyncHandler(async (req, res, next) => {
+  if (!req.user) throw new Error("Seems the user is not logged in");
+
+  const user = await User.findById(req.userId, "name username _id email");
+  res.json({ user, message: `user with the id ${req.userId} found` });
+});
+
 exports.createUser = asyncHandler(async (req, res, next) => {
   const usernameExist = await User.findOne({ username: req.body.username });
   const emailExist = await User.findOne({ email: req.body.email });

@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
-// const { TaskSchema } = require("./task.model");
 
 const ProcessSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      unique: true
     },
-    user: {
+    board: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Board",
       required: true
     },
     tasks: [

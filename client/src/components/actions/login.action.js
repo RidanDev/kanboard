@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../../config";
-import { LOGIN_USER, LOGIN_USER_ERROR, LOGIN_USER_START, LOGOUT_USER, LOGOUT_USER_ERROR, LOGOUT_USER_START } from "./action-types";
+import { LOGIN_USER, LOGIN_USER_ERROR, LOGIN_USER_START, LOGOUT_USER, LOGOUT_USER_ERROR, LOGOUT_USER_START, GET_USER, GET_USER_ERROR, GET_USER_START } from "./action-types";
 
 const loginStart = () => ({
   type: LOGIN_USER_START,
@@ -10,6 +10,11 @@ const loginStart = () => ({
 const logoutStart = () => ({
   type: LOGOUT_USER_START,
   payload: "user logout started..."
+});
+
+const getUserStart = () => ({
+  type: GET_USER_START,
+  payload: "Getting this particular user..."
 });
 
 export const loginUser = details => dispatch => {
@@ -30,7 +35,7 @@ export const loginUser = details => dispatch => {
 
       dispatch({
         type: LOGIN_USER,
-        payload: res.data
+        payload: res.data.message
       });
 
       localStorage.setItem("kanboarding", true);
@@ -39,6 +44,31 @@ export const loginUser = details => dispatch => {
     .catch(err =>
       dispatch({
         type: LOGIN_USER_ERROR,
+        payload: err
+      })
+    );
+};
+
+export const getUser = () => dispatch => {
+  dispatch(getUserStart());
+
+  axios
+    .get(`${API_URL}/user`, { withCredentials: true })
+    .then(res => {
+      if (res.data.error)
+        return dispatch({
+          type: GET_USER_ERROR,
+          payload: res.data.error
+        });
+
+      dispatch({
+        type: GET_USER,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_USER_ERROR,
         payload: err
       })
     );

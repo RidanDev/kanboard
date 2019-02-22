@@ -28,6 +28,29 @@
       }
     }
 
+    & > span {
+      & span {
+        margin-right: 1rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+      }
+
+      & button {
+        font-size: 1.5rem;
+        background-color: #fff;
+        border-radius: 5px;
+        width: 7rem;
+        height: 3.5rem;
+        color: #0b0c0c;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #a2a5aa;
+          border: 1px solid #a2a5aa;
+        }
+      }
+    }
+
     & .input {
       margin-left: 1rem;
       display: inline-block;

@@ -3,11 +3,11 @@ const process = require("../controller/process.controller");
 
 const route = express.Router();
 
-route.post("/process/create", process.createProcess);
+route.post("/process/:boardId/create", process.createProcess);
 route.get("/process/:processId", process.getProcess);
 route.put("/process/:processId", process.modifyProcess);
-route.delete("/process/:processId", process.deleteUserProcess);
+route.delete("/process/:boardId/:processId", process.deleteUserProcess);
 route.get("/processes", process.getAllProcesses);
-route.get("/user/processes", process.getProcessByUser);
+route.get("/processes/:boardId", process.getProcessByBoard);
 
 module.exports = route;
