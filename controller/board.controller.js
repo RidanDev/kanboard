@@ -1,9 +1,3 @@
-// TODO
-// create a board
-// get all the boards for a user
-// delete a board
-// edit a board (edit only the name of the board)
-
 const asyncHandler = require("../lib/async_handler");
 const Board = require("../model/board.model");
 const Process = require("../model/process.model");
@@ -23,38 +17,46 @@ exports.createUserBoard = asyncHandler(async (req, res, next) => {
   res.json({ message: "board created successfully", board });
 });
 
-exports.getUserBoards = asyncHandler(async (req, res, next) => {
-  if (!req.user) throw new Error("You need to login");
+exports.getBoard = asyncHandler(async (req, res, next) => {
+  if (!req.user) throw new Error("Wait!, it seems you are not logged in.");
 
-  const boards = await Board.find({ user: req.userId }).populate({
+  const board = await Board.findById(req.params.boardId).populate({
     path: "processes",
     populate: { path: "tasks" }
   });
+  if (!board) throw new Error("Board not found or does not exist");
+
+  res.json({ message: `board with id ${board._id} found`, board });
+});
+
+exports.getUserBoards = asyncHandler(async (req, res, next) => {
+  if (!req.user) throw new Error("You need to login");
+
+  const boards = await Board.find({ user: req.userId });
   res.json({ count: boards.length, boards });
 });
 
 exports.editUserBoard = asyncHandler(async (req, res, next) => {
   if (!req.user) throw new Error("Login to perform this operation");
 
-  const board = await Board.findById(req.params.boardId);
+  const board = await Board.findById(req.params.boardId).populate({
+    path: "processes",
+    populate: { path: "tasks" }
+  });
   if (!board) throw new Error("Board not found or does not exist");
 
   board.name = req.body.name;
   board.save((err, result) => {
     if (err) next(err);
 
-    res.json({ message: `Board with id ${result._id} updated successfully`, result });
+    res.json({ message: `Board with id ${result._id} updated successfully`, board });
   });
 });
 
 exports.deleteUserBoard = asyncHandler(async (req, res, next) => {
   if (!req.user) throw new Error("To prove you are the owner, log in");
 
-  // Todo
-  // get the board
   const board = await Board.findById(req.params.boardId);
-  // target all the process in the board and delete all of them
-  // target all the task in the process and delete all of them
   const done = board.processes.map(async (process, index, array) => {
     const deletedProcess = await Process.findByIdAndDelete(process);
 
@@ -77,8 +79,7 @@ exports.deleteUserBoard = asyncHandler(async (req, res, next) => {
     return completed;
   });
   if (done) {
-    // finally delete the board
     const deletedBoard = await Board.findByIdAndDelete(req.params.boardId);
-    if (deletedBoard) res.json({ message: `board with the id ${deletedBoard._id} deleted successfully.` });
+    if (deletedBoard) res.json({ message: `board with the id ${deletedBoard._id} deleted successfully.`, deletedBoard: deletedBoard._id });
   }
 });

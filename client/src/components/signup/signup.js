@@ -14,7 +14,7 @@ class Signup extends Component {
   componentDidMount() {
     let loggedIn = localStorage.getItem("kanboarding");
     if (loggedIn) {
-      this.props.history.push("/");
+      this.props.history.push("/boards");
     }
   }
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { loginUser } from "../actions/login.action";
@@ -17,7 +16,7 @@ class Login extends Component {
   componentDidMount() {
     let loggedIn = localStorage.getItem("kanboarding");
     if (loggedIn) {
-      this.props.history.push("/");
+      this.props.history.push("/boards");
     }
   }
 

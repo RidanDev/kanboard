@@ -56,7 +56,6 @@ exports.deleteUserProcess = asyncHandler(async (req, res, next) => {
   board.processes = board.processes.filter(process => process.toString() !== req.params.processId.toString());
 
   const process = await Process.findById(req.params.processId);
-  // if (process.user.toString() !== req.userId.toString()) throw new Error("You are not the owner of this process");
 
   const done = process.tasks.map(async (task, index, array) => {
     const deletedTask = await Task.findByIdAndDelete(task);
@@ -73,7 +72,7 @@ exports.deleteUserProcess = asyncHandler(async (req, res, next) => {
       if (err) next(err);
 
       const deletedProcess = await Process.findByIdAndDelete(req.params.processId);
-      if (deletedProcess) res.json({ message: "Process deleted successfully!" });
+      if (deletedProcess) res.json({ message: "Process deleted successfully!", deletedProcess });
     });
   }
 });
@@ -81,13 +80,13 @@ exports.deleteUserProcess = asyncHandler(async (req, res, next) => {
 exports.modifyProcess = asyncHandler(async (req, res, next) => {
   if (!req.user) throw new Error("To modify your process, you need to log in");
 
-  const process = await Process.findById(req.params.processId);
+  const process = await Process.findById(req.params.processId).populate("tasks");
   if (!process) throw new Error("Process does not exist");
 
   process.title = req.body.title;
   process.save((err, result) => {
     if (err) next(err);
 
-    res.json({ message: "Process updated successfully", result });
+    res.json({ message: "Process updated successfully", process });
   });
 });
