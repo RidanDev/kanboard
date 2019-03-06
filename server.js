@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const user_route = require("./routes/user.routes");
 const process_route = require("./routes/process.routes");
 const task_route = require("./routes/task.routes");
