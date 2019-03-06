@@ -17,6 +17,9 @@ mongoose.Promise = global.Promise;
 
 const app = express();
 
+// have access to all the static files generated for the frontend
+app.use(express.static(path.join(__dirname, "client")));
+
 app.use(function(req, res, next) {
   // This cors setting makes sure that cookie is set on the client's device
   // In the frontend make sure to set withCredentials: true, so that cookie can be sent along on network request
@@ -64,6 +67,10 @@ app.use((err, req, res, next) => {
   res.json({
     error: err.message
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 const port = process.env.PORT || 4500;

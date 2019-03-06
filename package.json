@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "start-watch": "nodemon server.js"
+    "start-watch": "nodemon server.js",
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "keywords": [],
   "author": "",
