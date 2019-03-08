@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "start-watch": "nodemon server.js",
-    "heroku-prebuild": "yarn --production=false",
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "keywords": [],
