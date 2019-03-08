@@ -1,4 +1,4 @@
-// require("dotenv").config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -19,7 +19,7 @@ mongoose.Promise = global.Promise;
 const app = express();
 
 // have access to all the static files generated for the frontend
-app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use(function(req, res, next) {
   // This cors setting makes sure that cookie is set on the client's device
@@ -70,7 +70,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get("*", (req, res) => {
+app.use("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
