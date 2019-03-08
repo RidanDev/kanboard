@@ -1,6 +1,6 @@
-// export const API_URL = "https://kanboarding.herokuapp.com/api";
+export const API_URL = "https://kanboarding.herokuapp.com/api";
 
-export const API_URL = "http://localhost:4500/api";
+// export const API_URL = "http://localhost:4500/api";
 
 export const capitalize = contents => {
   let contentArray = contents.split(" ");
