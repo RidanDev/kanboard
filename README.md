@@ -5,3 +5,5 @@ This web application is a simple mini-task manager, which you can use to keep tr
 This application is best enjoyed on a desktop browser, though all the features work well on mobile too.
 
 let's [tweet](https://twitter.com/jude_ojini) on how you feel about this project, you can star, PR, Fork and contribute to this project as well.
+
+You can try the [demo](https://kanboarding.herokuapp.com) app and give feedback.
